@@ -1,0 +1,116 @@
+Consider the following schema:
+create database bank
+
+tables:
+users(id, name, email, account_no)
+accounts(id, account_no, balance)
+
+Queries:
+Insert some raw data and do the following queries using mysql transaction statement:
+i) userA is depositing 1000 Rs. his account
+
+ii) userA is withdrawing 500 Rs.
+
+iii) userA is transferring 200 Rs to userB's account
+
+mysql> SELECT * FROM USERS JOIN ACCOUNTS WHERE USERS.ID=ACCOUNTS.ID;
++-----+-------+-----------------+------------+-----+------------+---------+
+| ID  | Name  | Email           | Account_no | ID  | Account_no | Balance |
++-----+-------+-----------------+------------+-----+------------+---------+
+| 123 | userA | userA@gmail.com |      12345 | 123 |      12345 |   45000 |
+| 345 | userC | userC@gmail.com |      34567 | 345 |      34567 |   55300 |
+| 567 | userE | userE@gmail.com |      56789 | 567 |      56789 |   52300 |
+| 234 | userB | userB@gmail.com |      23456 | 234 |      23456 |   96500 |
+| 456 | userD | userD@gmail.com |      45678 | 456 |      45678 |   78000 |
++-----+-------+-----------------+------------+-----+------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE Accounts
+    -> Set Balance=Balance+1000
+    -> where account_no=12345;
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> commit work;
+Query OK, 0 rows affected (0.00 sec)
+
+
+mysql> SELECT * FROM USERS JOIN ACCOUNTS WHERE USERS.ID=ACCOUNTS.ID;
++-----+-------+-----------------+------------+-----+------------+---------+
+| ID  | Name  | Email           | Account_no | ID  | Account_no | Balance |
++-----+-------+-----------------+------------+-----+------------+---------+
+| 123 | userA | userA@gmail.com |      12345 | 123 |      12345 |   46000 |
+| 345 | userC | userC@gmail.com |      34567 | 345 |      34567 |   55300 |
+| 567 | userE | userE@gmail.com |      56789 | 567 |      56789 |   52300 |
+| 234 | userB | userB@gmail.com |      23456 | 234 |      23456 |   96500 |
+| 456 | userD | userD@gmail.com |      45678 | 456 |      45678 |   78000 |
++-----+-------+-----------------+------------+-----+------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE Accounts
+    -> Set Balance=Balance-500
+    -> where account_no=12345;
+Query OK, 1 row affected (0.13 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> commit work;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM USERS JOIN ACCOUNTS WHERE USERS.ID=ACCOUNTS.ID;
++-----+-------+-----------------+------------+-----+------------+---------+
+| ID  | Name  | Email           | Account_no | ID  | Account_no | Balance |
++-----+-------+-----------------+------------+-----+------------+---------+
+| 123 | userA | userA@gmail.com |      12345 | 123 |      12345 |   45500 |
+| 345 | userC | userC@gmail.com |      34567 | 345 |      34567 |   55300 |
+| 567 | userE | userE@gmail.com |      56789 | 567 |      56789 |   52300 |
+| 234 | userB | userB@gmail.com |      23456 | 234 |      23456 |   96500 |
+| 456 | userD | userD@gmail.com |      45678 | 456 |      45678 |   78000 |
++-----+-------+-----------------+------------+-----+------------+---------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE Accounts
+    -> Set Balance=Balance-200
+    -> where account_no=12345;
+Query OK, 1 row affected (0.12 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Accounts
+    -> Set Balance=Balance+200
+    -> where account_no=23456;
+Query OK, 1 row affected (0.12 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> commit work;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM USERS JOIN ACCOUNTS WHERE USERS.ID=ACCOUNTS.ID;
++-----+-------+-----------------+------------+-----+------------+---------+
+| ID  | Name  | Email           | Account_no | ID  | Account_no | Balance |
++-----+-------+-----------------+------------+-----+------------+---------+
+| 123 | userA | userA@gmail.com |      12345 | 123 |      12345 |   45300 |
+| 345 | userC | userC@gmail.com |      34567 | 345 |      34567 |   55300 |
+| 567 | userE | userE@gmail.com |      56789 | 567 |      56789 |   52300 |
+| 234 | userB | userB@gmail.com |      23456 | 234 |      23456 |   96700 |
+| 456 | userD | userD@gmail.com |      45678 | 456 |      45678 |   78000 |
++-----+-------+-----------------+------------+-----+------------+---------+
+5 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
